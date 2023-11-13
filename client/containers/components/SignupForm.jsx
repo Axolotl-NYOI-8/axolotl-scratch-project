@@ -72,11 +72,16 @@ const makeUser = (e) => {
         </div>
 
       </form> */}
-      <form>
-        <p>Type: Normal, Dry, Oily, or Combination</p>
-        <input type='text' name='skintype' placeholder='Choose Skin Type' id="skintype" />
-      </form>
-{/* 
+          <form>
+            <p>Type: Normal, Dry, Oily, or Combination</p>
+            <input
+              type='text'
+              name='skintype'
+              placeholder='Choose Skin Type'
+              id='skintype'
+            />
+          </form>
+          {/* 
           <h3>Skin Type</h3>
           <ul className='Skin Type'>
             <input type='text' />
@@ -121,7 +126,10 @@ const makeUser = (e) => {
             Sign Up
           </button>
         </Link> */}
-        <input type='submit' value='Create User' />
+          <input type='submit' value='Create User' />
+        <Link to={'/'}>
+          <button>Home</button>
+        </Link>
       </form>
     </div>
   );

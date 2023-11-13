@@ -32,12 +32,12 @@ app.get("/signup", (req, res) => {
 
 app.post("/signup", clientController.createClient, (req, res) => {
   console.log('client created');
-   res.redirect('/home');
+   res.status(200).json('Thank you!!');
 });
 
 // after logging in, our plan is to have a component to display userinfo so the endpoint would be '/'?
-app.get("/login", clientController.getClientInfo, (req, res) => {
-  res.status(200).send(res.locals.clientObj);
+app.get("/login", (req, res) => {
+  res.status(200).send();
 });
 
 // app.post("/login", (req, res) => {
@@ -72,8 +72,9 @@ app.get(
   }
 );
 
-app.get("/", (req, res) => {
-  res.status().res.json("");
+app.get('/', clientController.getClientInfo, (req, res) => {
+  const data = res.locals.clientObj;;
+  res.status(200).send(data);
 });
 
 //Unknown route handler

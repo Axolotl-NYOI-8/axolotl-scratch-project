@@ -27,7 +27,7 @@ clientController.createClient = (req, res, next) => {
 }
 
 clientController.getClientInfo = async (req, res, next) => {
-    const { userName, password } = req.params;
+    const { userName, password } = req.body;
     console.log(`in here: ${userName}, ${password}`);
     try {
         const foundUser = await Client.findOne({ userName: userName, password: password });
