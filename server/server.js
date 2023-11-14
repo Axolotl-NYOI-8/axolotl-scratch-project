@@ -6,6 +6,8 @@ const sqlController = require("./controllers/sqlController");
 
 const mongoose = require("mongoose");
 const clientController = require("./controllers/mongoController.js");
+const gpt3Controller = require("./controllers/gpt3apiController.js");
+const { pipeline } = require("stream");
 
 // const mongoURI = 'mongodb://localhost/scratchProject';
 // const dbName = 'scratchProject';
@@ -28,6 +30,10 @@ app.use("/client", express.static(path.resolve(__dirname, "../client"))); // red
 app.get("/signup", (req, res) => {
   // this function serves the signup html when directed to the signup page
   res.sendFile(path.resolve(__dirname, "../client.signup.html"));
+});
+
+app.post('/chatapi', gpt3Controller.sendBackData, (res, req) => {
+  return res.status(200).json(res.locals.ourData);
 });
 
 app.post("/signup", clientController.createClient, (req, res) => {
