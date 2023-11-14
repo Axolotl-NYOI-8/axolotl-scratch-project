@@ -9,15 +9,15 @@ const clientController = require("./controllers/mongoController.js");
 const gpt3Controller = require("./controllers/gpt3apiController.js");
 const { pipeline } = require("stream");
 
-// const mongoURI = 'mongodb://localhost/scratchProject';
-// const dbName = 'scratchProject';
-// mongoose.connect(mongoURI);
-// mongoose.connection.once('open', () => {
-//   console.log('Database connected: ', dbName);
-// });
-// mongoose.connection.on('error', (err) => {
-//   console.error('connection error:', err);
-// });
+const mongoURI = 'mongodb://localhost:27017';
+const dbName = 'scratchProject';
+mongoose.connect(mongoURI);
+mongoose.connection.once('open', () => {
+  console.log('Database connected: ', dbName);
+});
+mongoose.connection.on('error', (err) => {
+  console.error('connection error:', err);
+});
 
 // const bodyParser = require('body-parser');
 // app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,31 +37,46 @@ app.post('/chatapi', gpt3Controller.sendBackData, (res, req) => {
 });
 
 app.post("/signup", clientController.createClient, (req, res) => {
-  res.status(200).send(res.locals.clientObj);
+  console.log('client created');
+   res.redirect('/home');
 });
 
 // after logging in, our plan is to have a component to display userinfo so the endpoint would be '/'?
-app.get("/:firstName/:lastName", clientController.getClientInfo, (req, res) => {
+app.get("/login", clientController.getClientInfo, (req, res) => {
   res.status(200).send(res.locals.clientObj);
 });
 
-app.post("/login", (req, res) => {
-  res.status().res.json("");
-});
+// app.post("/login", (req, res) => {
+//   res.status().res.json("");
+// });
 
-app.get("/newuser", (req, res) => {
-  res.status().res.json("");
-});
+// app.get("/newuser", (req, res) => {
+//   res.status().res.json("");
+// });
 
-app.get("/refresh", (req, res) => {
-  res.status().res.json("");
-});
+// app.get("/refresh", (req, res) => {
+//   res.status().res.json("");
+// });
 
-app.get("/fetcher", sqlController.initialScrape, (req, res) => {
-  const data = res.locals.fetcher;
-  // console.log('back out')
-  res.status(200).json(data);
-});
+app.get(
+  "/fetcher",
+  sqlController.getFaceWash,
+  sqlController.getEssence,
+  sqlController.getToner,
+  sqlController.getNightCream,
+  sqlController.getSunscreen,
+  (req, res) => {
+    const data = {};
+    data["Face Wash & Cleansers"] = res.locals.getFaceWash;
+    data["Mists & Essences"] = res.locals.getEssence;
+    data["Toners"] = res.locals.getToner;
+    data["Night Creams"] = res.locals.getNightCream;
+    data["Face Sunscreen"] = res.locals.getSunscreen;
+    console.log(data);
+    console.log("back out");
+    res.status(200).json(data);
+  }
+);
 
 app.get("/", (req, res) => {
   res.status().res.json("");

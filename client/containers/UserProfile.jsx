@@ -2,8 +2,7 @@ import React from "react";
 import UserProducts from "./components/UserProducts.jsx";
 import Recommendations from "./components/Recommendations.jsx";
 
-const UserProfile = props => {
-
+const UserProfile = (props) => {
 
   return (
 
