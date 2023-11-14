@@ -1,7 +1,42 @@
-const fetch = require('node-fetch'); 
+// import { Configuration, OpenAIApi } from "openai";
 
-const API_URL = 'https://api.openai.com/v1/engines/davinci/completions';
-const API_KEY = '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';
+const gpt3apiController = {};
+
+gpt3apiController.sendBackData = async (req, res, next) => {
+  // res.locals.ourData
+
+  // const API_URL = 'https://api.openai.com/v1/chat/completions';
+  // const API_KEY = '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';
+
+  try{
+    console.log("im insidde")
+    const response = await fetch(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer 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"
+        },
+        body: JSON.stringify({
+          model:"gpt-3.5-turbo",
+          messages: [{role: "user", content: `${req.body.message}`}]
+        })
+      }
+    );
+      const data = await pipeline(response.body, res);
+      res.locals.ourData = data;
+      next();
+  } catch(err) {
+    console.log(err);
+  }
+  }
+
+
+
+
+const API_URL = 'https://api.openai.com/v1/chat/completions';
+const API_KEY = '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';
 
 async function getSkincareProductRecommendations(userSkinType, userSkinConcerns, userAllergies) {
   const userPrompt = `I have ${userSkinType} skin, with skin concerns related to ${userSkinConcerns.join(', ')} and allergies to ${userAllergies.join(', ')}. Can you recommend skincare products that are safe for me?`;
@@ -13,9 +48,9 @@ async function getSkincareProductRecommendations(userSkinType, userSkinConcerns,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      prompt: userPrompt,
-      max_tokens: 100, // Adjust the number of tokens as needed
-    },
+      model:"gpt-3.5-turbo",
+      messages: [{role: "user", content: "I have dry skin, with skin concerns related to acne and allergies to strawberry. Can you recommend skincare products that are safe for me?"}]
+  },
   )};
 
   try {
@@ -45,4 +80,4 @@ async function getSkincareProductRecommendations(userSkinType, userSkinConcerns,
   }
 }
 
-module.exports = { getSkincareProductRecommendations };
+module.exports = gpt3apiController;
